@@ -25,7 +25,8 @@ func ConnectDb() {
 		os.Getenv("DB_NAME"),
 	)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: logger.Default.LogMode(logger.Info),
+		Logger:          logger.Default.LogMode(logger.Info),
+		CreateBatchSize: 1000,
 	})
 	if err != nil {
 		log.Fatal("Failed to connect to db: ", err)
@@ -35,7 +36,7 @@ func ConnectDb() {
 	db.Logger = logger.Default.LogMode(logger.Info)
 
 	log.Println("Running db models migrations")
-	db.AutoMigrate(&models.Fact{})
+	db.AutoMigrate(&models.Fact{}, &models.User{}, &models.Quiz{})
 
 	DB = Dbinstance{Db: db}
 }

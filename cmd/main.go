@@ -9,6 +9,7 @@ func main() {
 	database.ConnectDb()
 	app := fiber.New()
 
+	setupMiddleware(app)
 	setupRoutes(app)
 
 	app.Listen(":3000")
